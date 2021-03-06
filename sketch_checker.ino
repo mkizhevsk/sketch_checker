@@ -10,8 +10,8 @@ float capplus = 0;
 float minute = 0;
 bool start = true;
 
-//float resist = 7.4;
-//float resist = 3; // вариант для батареи
+int switcher = 2; // 1-универсальный, 2-для батареи
+float resist;
 
 int reading;
 int counter = 0;
@@ -36,6 +36,11 @@ void setup() {
 }
 
 void loop() {
+  if (switcher == 1) {
+    resist = 7.4; // универсальный    
+  } else {
+    resist = 3; // вариант для батареи
+  }
   
   if (voltage == 4.5) { // запускаем реле
     digitalWrite (2, LOW);
@@ -80,8 +85,11 @@ void loop() {
     digitalWrite (2, HIGH);
     capplus = 0;
   } else {
-    //capplus = (voltage*10) / (resist*6); // * 1000 / * 60 минут в часе * 10 раз по 6 секунд
-    capplus = voltage / 18; // вариант для батареи, максимум 20950 мА/час
+    if(switcher == 1) { // универсальный
+      capplus = (voltage*10) / (resist*6); // * 1000 / * 60 минут в часе * 10 раз по 6 секунд 
+    } else {
+      capplus = voltage / 18; // вариант для батареи, максимум 20950 мА/час
+    }
   }
   //capplus = 40;
   
